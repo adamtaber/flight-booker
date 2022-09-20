@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  flight_id: 1
+  passenger_id: 1
+  ticket_quantity: 1
+
+two:
+  flight_id: 1
+  passenger_id: 1
+  ticket_quantity: 1

@@ -1,0 +1,17 @@
+<%= form_with model: @bookings do |form| %>
+  <% i = 1 %>
+  <% params[:ticket_quantity].to_i.times do %>
+    <p>Passenger <%= "#{i}" %></p>
+    <%= form.fields_for :passengers do |passenger_info| %>
+      <%= form.label :first_name, "First Name:"%>
+      <%= form.text_field :first_name %>
+      <%= form.label :last_name, "Last Name:"%>
+      <%= form.text_field :last_name %>
+      <%= form.label :email, "email:"%>
+      <%= form.text_field :email %>
+    <% end %>
+    <% i += 1%>
+    <br>
+  <% end %>
+  <%= form.submit 'Purchase Ticket' %>
+<% end %>

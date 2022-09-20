@@ -1,30 +1,44 @@
 <h1>Choose your flight details</h1>
 
 <%= form_with url: "/flights", method: 'get', local:true do |form| %>
-  <%= form.select(:departure_airport_id, options_for_select(@airport_options, params[:departure_airport_id]), prompt: 'departure') %>
-  <%= form.select(:arrival_airport_id, options_for_select(@airport_options, params[:arrival_airport_id]), prompt: 'arrival') %>
-  <%= form.select(:ticket_number, options_for_select(['1', '2', '3', '4'], params[:ticket_number]), prompt: 'passengers')%>
-  <%= form.select(:departure_month, options_for_select(@month_options, params[:departure_month]), prompt: 'month') %>
-  <%= form.select(:departure_day, options_for_select(@day_options, params[:departure_day]), prompt: 'day') %>
-  <%= form.select(:departure_year, options_for_select(@year_options, params[:departure_year]), prompt: 'year') %>
+  <%= form.select(:departure_airport_id, options_for_select(@airport_options, 
+  params[:departure_airport_id]), prompt: 'departure') %>
+
+  <%= form.select(:arrival_airport_id, options_for_select(@airport_options, 
+  params[:arrival_airport_id]), prompt: 'arrival') %>
+
+  <%= form.select(:ticket_number, options_for_select(['1', '2', '3', '4'], 
+  params[:ticket_number]), prompt: 'passengers')%>
+  
+  <%= form.select(:departure_month, options_for_select(@month_options, 
+  params[:departure_month]), prompt: 'month') %>
+
+  <%= form.select(:departure_day, options_for_select(@day_options, 
+  params[:departure_day]), prompt: 'day') %>
+
+  <%= form.select(:departure_year, options_for_select(@year_options, 
+  params[:departure_year]), prompt: 'year') %>
+
   <%= form.submit "Search" %>
 <% end %>
 
-<% selected_date = Date.new(params[:departure_year].to_i, params[:departure_month].to_i, params[:departure_day].to_i)%>
+<% unless @flight_options.nil? %>
+  <p>Outbound flight for <%= @flight_options.first.departure_airport.airport_code %>
+  to <%= @flight_options.first.arrival_airport.airport_code %></p>
 
-<% flight_options = Flight.where(
-  departure_airport_id: params[:departure_airport_id],
-  arrival_airport_id: params[:arrival_airport_id],
-  start_datetime: selected_date.all_day).all%>
+  <p><%= @selected_date.to_fs(:long_ordinal)%>
 
-<p>Departure Airport: <%= flight_options.first.departure_airport.airport_code %></p>
-<p>Arrival Airport: <%= flight_options.first.arrival_airport.airport_code %></p>
-<p>Date: <%= selected_date.to_fs(:long_ordinal)%>
-<p>Available Times: </p>
-<% flight_options.order('start_datetime asc').each do |f| %>
-  <p> <%= f.start_datetime.to_s(:time) %></p>
+  <p>Choose a flight time: </p>
+
+  <%= form_with url:"/bookings/new", method: "get", local:true do |form| %>
+    <% @flight_options.each do |flight| %>
+      <%= form.radio_button :selected_flight, "#{flight.id}" %>
+      <%= form.label "selected_flight_#{flight.id}", "#{flight.start_datetime.to_s(:time)}" %>
+    <% end %>
+    <%= form.hidden_field :ticket_quantity, value: params[:ticket_number]%>
+    <%= form.submit "Select Flight" %>
+  <% end %>
 <% end %>
-
 
 
 
