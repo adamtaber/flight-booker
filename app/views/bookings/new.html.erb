@@ -1,14 +1,15 @@
-<%= form_with model: @bookings do |form| %>
+<%= form_with model: @booking, local: true do |form| %>
+  <%= form.hidden_field :flight_id, value: params[:selected_flight]%>
   <% i = 1 %>
-  <% params[:ticket_quantity].to_i.times do %>
+  <% @passenger_quantity.times do %>
     <p>Passenger <%= "#{i}" %></p>
     <%= form.fields_for :passengers do |passenger_info| %>
-      <%= form.label :first_name, "First Name:"%>
-      <%= form.text_field :first_name %>
-      <%= form.label :last_name, "Last Name:"%>
-      <%= form.text_field :last_name %>
-      <%= form.label :email, "email:"%>
-      <%= form.text_field :email %>
+      <%= passenger_info.label :first_name, "First Name:"%>
+      <%= passenger_info.text_field :first_name %>
+      <%= passenger_info.label :last_name, "Last Name:"%>
+      <%= passenger_info.text_field :last_name %>
+      <%= passenger_info.label :email, "email:"%>
+      <%= passenger_info.email_field :email %>
     <% end %>
     <% i += 1%>
     <br>
