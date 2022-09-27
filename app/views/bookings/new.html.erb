@@ -1,4 +1,12 @@
+
 <%= form_with model: @booking, local: true do |form| %>
+  <p>You have selected the flight from
+    <%= @flight_info.departure_airport.airport_code %> to 
+    <%= @flight_info.arrival_airport.airport_code %> at 
+    <%= @flight_info.start_datetime.to_s(:time)%> on 
+    <%= @selected_date.to_fs(:long_ordinal)%>
+  </p>
+  <p>If this is correct, please complete the following form</p>
   <%= form.hidden_field :flight_id, value: params[:selected_flight]%>
   <% i = 1 %>
   <% @passenger_quantity.times do %>

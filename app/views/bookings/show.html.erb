@@ -1,1 +1,11 @@
 <p>Thank you for purchasing your tickets!</p>
+
+<p>Flight Info</p>
+<p>Departure Airport: <%= @booking.flight.departure_airport.airport_code %> </p>
+<p>Arrival Airport: <%= @booking.flight.arrival_airport.airport_code %> </p>
+<p>Date: <%= @selected_date.to_fs(:long_ordinal)%> </p>
+<p>Time: <%= @booking.flight.start_datetime.to_s(:time)%>
+<p>Passengers: </p>
+<% @booking.passengers.all.each do |passenger| %>
+  <%= passenger.first_name %> <%= passenger.last_name %> (<%= passenger.email %>)
+<% end %>

@@ -4,6 +4,10 @@ class BookingsController < ApplicationController
     @booking = Booking.new
     @passenger_quantity = params[:ticket_quantity].to_i
     @passenger_quantity.times { @booking.passengers.build }
+    @flight_info = Flight.find(params[:selected_flight])
+    @selected_date = Date.new(@flight_info.start_datetime.year, 
+      @flight_info.start_datetime.month, 
+      @flight_info.start_datetime.day)
   end
 
   def create
@@ -17,6 +21,10 @@ class BookingsController < ApplicationController
 
   def show
     @booking = Booking.find(params[:id])
+    @flight_info = @booking.flight
+    @selected_date = Date.new(@flight_info.start_datetime.year, 
+      @flight_info.start_datetime.month, 
+      @flight_info.start_datetime.day)
   end
 
   private
